@@ -1,0 +1,275 @@
+definitions:
+  define.ProblemBasic:
+    properties:
+      content:
+        description: 问题内容
+        type: string
+      identity:
+        description: 问题表的唯一标识
+        type: string
+      max_mem:
+        description: 最大运行内存
+        type: integer
+      max_runtime:
+        description: 最大运行时长
+        type: integer
+      problem_categories:
+        description: 关联问题分类表
+        items:
+          type: integer
+        type: array
+      test_cases:
+        description: 关联测试用例表
+        items:
+          $ref: '#/definitions/define.TestCase'
+        type: array
+      title:
+        description: 问题标题
+        type: string
+    type: object
+  define.TestCase:
+    properties:
+      input:
+        description: 输入
+        type: string
+      output:
+        description: 输出
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      description: Login
+      parameters:
+      - description: name
+        in: formData
+        name: name
+        type: string
+      - description: password
+        in: formData
+        name: password
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 登录
+      tags:
+      - 公共方法
+  /problem-add:
+    post:
+      description: AddProblem
+      parameters:
+      - description: authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: title
+        in: formData
+        name: title
+        type: string
+      - description: content
+        in: formData
+        name: content
+        type: string
+      - description: max_mem
+        in: formData
+        name: max_mem
+        type: integer
+      - description: max_runtime
+        in: formData
+        name: max_runtime
+        type: integer
+      - description: category_ids
+        in: formData
+        name: category_ids
+        type: array
+      - description: test_cases
+        in: formData
+        name: test_cases
+        type: array
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 添加问题
+      tags:
+      - ""
+  /problem-create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: ProblemBasic
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/define.ProblemBasic'
+      responses:
+        "200":
+          description: '{"code":"200","data":""}'
+          schema:
+            type: string
+      summary: 问题创建
+      tags:
+      - 管理员私有方法
+  /problem-detail:
+    get:
+      description: GetProblemDetail
+      parameters:
+      - description: problem_identity
+        in: query
+        name: identity
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 问题详情
+      tags:
+      - 公共方法
+  /problem-list:
+    get:
+      description: GetProblemlist
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: size
+        in: query
+        name: size
+        type: integer
+      - description: keyword
+        in: query
+        name: keyword
+        type: string
+      - description: category_identity
+        in: query
+        name: category_identity
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 问题列表
+      tags:
+      - 公共方法
+  /register:
+    post:
+      description: Register
+      parameters:
+      - description: email
+        in: formData
+        name: mail
+        required: true
+        type: string
+      - description: name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: code
+        in: formData
+        name: code
+        required: true
+        type: string
+      - description: password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: phone
+        in: formData
+        name: phone
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 注册
+      tags:
+      - 公共方法
+  /send-code:
+    post:
+      description: SendCode
+      parameters:
+      - description: email
+        in: formData
+        name: email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 发送验证码
+      tags:
+      - 公共方法
+  /submit-list:
+    get:
+      description: GetSubmitList
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: size
+        in: query
+        name: size
+        type: integer
+      - description: problem_identity
+        in: query
+        name: problem_identity
+        type: string
+      - description: user_identity
+        in: query
+        name: user_identity
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 提交列表
+      tags:
+      - 公共方法
+  /user-rank-list:
+    get:
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: size
+        in: query
+        name: size
+        type: integer
+      responses:
+        "200":
+          description: '{"code":"200","data":""}'
+          schema:
+            type: string
+      summary: 用户排行榜
+      tags:
+      - 公共方法
+swagger: "2.0"
